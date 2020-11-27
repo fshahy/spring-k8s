@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spring-k8s
+  labels:
+    name: demo
+spec:
+  containers:
+    - name: spring-k8s
+      image: fshahy/spring-k8s:6.0.0
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: spring-k8s-rc
+spec:
+  replicas: 1
+  selector:
+    name: demo
+  template:
+    metadata:
+      labels:
+        name: demo
+    spec:
+      containers:
+      - name: spring-k8s
+        image: fshahy/spring-k8s:6.0.0
+        ports:
+          - containerPort: 8080
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: spring-k8s-service
+#spec:
+#  ports:
+#    - port: 8080
+#      targetPort: 8080
+#  selector:
+#    name: demo
